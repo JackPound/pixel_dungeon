@@ -3,23 +3,25 @@ console.log("JS Linked")
 console.log($)
 
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'pixel-clone', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'pixel-clone', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
-
-    game.load.image('tiles','assets/tiles1.png');
+	//load spritesheets and or images
+    game.load.spritesheet('tiles','assets/tiles1.png');
     game.load.image('player','assets/player.png');
-
+    game.load.image('tiles', 'assets/tiles0.png')
 }
 
 var player;
 var cursors;
-
+var walls;
 function create() {
+	
+    game.world.setBounds(0, 0, 1600, 1200);
 
-    // game.add.tileSprite(0, 0, 800, 600, 'background');
+    game.add.tileSprite(0, 0, 1600, 1200, 'background');
 
-    game.world.setBounds(0, 0, 800, 600);
+
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -31,12 +33,15 @@ function create() {
 
     game.camera.follow(player);
 
-    
+    walls = game.add.sprite(100, 100, 'tiles')
+
+    game.physics.p2.enable(walls);
+;
 }
 
 function update() {
 
-	player.angle = 0;
+	walls.body.setZeroVelocity()
 
     player.body.setZeroVelocity();
 
